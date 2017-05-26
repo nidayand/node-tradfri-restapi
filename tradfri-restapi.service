@@ -1,0 +1,23 @@
+[Unit]
+Description=RESTful API for TRADFRI lighting (temporary)
+Wants=network.target
+Documentation=https://github.com/nidayand/node-tradfri-restapi
+
+[Service]
+Type=simple
+User=node-red
+Group=node-red
+WorkingDirectory=/home/node-red/node-tradfri-restapi
+Nice=5
+Environment="NODE_OPTIONS=--max-old-space-size=128"
+ExecStart=/usr/bin/env nave use 7 node $NODE_OPTIONS $NODE_RED_OPTIONS index.js
+# Use SIGINT to stop
+KillSignal=SIGINT
+# Auto restart on crash
+Restart=on-failure
+# Tag things in the log
+SyslogIdentifier=tradfri-restapi
+#StandardOutput=syslog
+
+[Install]
+WantedBy=multi-user.target
