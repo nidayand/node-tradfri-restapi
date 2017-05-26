@@ -40,6 +40,7 @@ exports.getDevices = function (req, res) {
         });
     }
 }
+
 exports.getGroupIds = function (req, res) {
     try {
         tradfri.getGroupIds().then(groupIds => {
@@ -115,7 +116,19 @@ exports.setDevice = function (req, res) {
         };
 
         if (req.query.brightness && !isNaN(parseInt(req.query.brightness)) && req.query.brightness <= 255)
-            q.brightness = req.query.brightness;
+            q.brightness = parseInt(req.query.brightness);
+
+        if (req.query.color) {
+            q.color = req.query.color.toLowerCase();
+            switch (q.color) {
+            case 'focus':    case 'cool':   q.color = 'f5faf6'; break;
+            case 'everyday': case 'normal': q.color = 'f1e0b5'; break;
+            case 'relax':    case 'warm':   q.color = 'efd275'; break;
+            default:
+                if ( ! req.query.color.match('/^[0-9a-fA-F]{6}$/'))
+                    delete q.color;
+            }
+        }
 
         tradfri.setDeviceState(req.params.deviceId, q).then(
             res.json({
