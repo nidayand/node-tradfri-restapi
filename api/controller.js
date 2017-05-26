@@ -118,6 +118,9 @@ exports.setDevice = function (req, res) {
         if (req.query.brightness && !isNaN(parseInt(req.query.brightness)) && req.query.brightness <= 255)
             q.brightness = parseInt(req.query.brightness);
 
+        if (req.query.transitionTime && !isNaN(parseInt(req.query.transitionTime)) && req.query.transitionTime >= 0)
+            q.transitionTime = parseInt(req.query.transitionTime);
+
         if (req.query.color) {
             q.color = req.query.color.toLowerCase();
             switch (q.color) {

@@ -4,16 +4,16 @@
 
 A simple REST-API implementation of [node-tradfri](https://www.npmjs.com/package/node-tradfri) with the following commands
 
- - `/tradfri/deviceids` will provide an array of device ids
  - `/tradfri/groupids` will provide an array of group ids
- - `/tradfri/devices` will provide a full list of all devices including meta data
+ - `/tradfri/deviceids` will provide an array of device ids
  - `/tradfri/groups` will provide a full list of all groups including devices and meta data
+ - `/tradfri/devices` will provide a full list of all devices including meta data
+ - `/tradfri/group/:groupid/:state` will set the state of a device (on/off). E.g. /tradfri/device/11007/off
  - `/tradfri/device/:deviceid` will get the status of a device, including brightness and color
  - `/tradfri/device/:deviceid/:state` will set the state of a device (on/off). E.g. /tradfri/device/17101/on
  - `/tradfri/device/:deviceid/on?color=:color` will set the color of a device, in hex, or 'cool', 'warm', 'normal'
  - `/tradfri/device/:deviceid/on?brightness=:brightness` will set the brightness of a device, from 0 to 255
- - `/tradfri/device/:deviceid/:state` will set the state of a device (on/off). E.g. /tradfri/device/17101/on
- - `/tradfri/group/:groupid/:state` will set the state of a device (on/off). E.g. /tradfri/device/11007/off
+ - In addition, adding `?transitionTime=30` (for example) to a `color=` or `brightness=` state change will animate the change over a number of _tenths-of-a-second_.
 
 First release is a bit of a quick one. Exceptions needs to be managed and include toggle as an option. I did the API as I need to control my IKEA TRÅDFRI-lights with Node-RED but Node-RED does not support Node v7.x (I assume it will wait for the next LTS release) and a simple micro service is the short term solution to have it integrated and managed by Node-RED.
 
