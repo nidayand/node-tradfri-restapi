@@ -1,5 +1,7 @@
 'use strict';
 
+require("process").title = 'node-tradfri-restapi';
+
 var config = require("config");
 
 var express = require("express"),
