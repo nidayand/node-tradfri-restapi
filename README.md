@@ -8,6 +8,10 @@ A simple REST-API implementation of [node-tradfri](https://www.npmjs.com/package
  - `/tradfri/groupids` will provide an array of group ids
  - `/tradfri/devices` will provide a full list of all devices including meta data
  - `/tradfri/groups` will provide a full list of all groups including devices and meta data
+ - `/tradfri/device/:deviceid` will get the status of a device, including brightness and color
+ - `/tradfri/device/:deviceid/:state` will set the state of a device (on/off). E.g. /tradfri/device/17101/on
+ - `/tradfri/device/:deviceid/on?color=:color` will set the color of a device, in hex, or 'cool', 'warm', 'normal'
+ - `/tradfri/device/:deviceid/on?brightness=:brightness` will set the brightness of a device, from 0 to 255
  - `/tradfri/device/:deviceid/:state` will set the state of a device (on/off). E.g. /tradfri/device/17101/on
  - `/tradfri/group/:groupid/:state` will set the state of a device (on/off). E.g. /tradfri/device/11007/off
 
