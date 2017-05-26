@@ -40,6 +40,7 @@ exports.getDevices = function (req, res) {
         });
     }
 }
+
 exports.getGroupIds = function (req, res) {
     try {
         tradfri.getGroupIds().then(groupIds => {
@@ -74,6 +75,39 @@ exports.getGroups = function (req, res) {
     }
 }
 
+exports.getGroup = function (req, res) {
+    try {
+        tradfri.getGroups().then(groups => {
+            res.json({
+                item: (groups.filter(group => { return group.id == req.params.groupId })).shift(),
+                status: "ok"
+            });
+        });
+
+    } catch (err) {
+        res.json({
+            items: [],
+            status: "err"
+        });
+    }
+}
+
+exports.getDevice = function (req, res) {
+    try {
+        tradfri.getDevices().then(devices => {
+            res.json({
+                item: (devices.filter(device => { return device.id == req.params.deviceId })).shift(),
+                status: "ok"
+            });
+        });
+
+    } catch (err) {
+        res.json({
+            items: [],
+            status: "err"
+        });
+    }
+}
 
 exports.setDevice = function (req, res) {
     try {
@@ -82,7 +116,22 @@ exports.setDevice = function (req, res) {
         };
 
         if (req.query.brightness && !isNaN(parseInt(req.query.brightness)) && req.query.brightness <= 255)
-            q.brightness = req.query.brightness;
+            q.brightness = parseInt(req.query.brightness);
+
+        if (req.query.transitionTime && !isNaN(parseInt(req.query.transitionTime)) && req.query.transitionTime >= 0)
+            q.transitionTime = parseInt(req.query.transitionTime);
+
+        if (req.query.color) {
+            q.color = req.query.color.toLowerCase();
+            switch (q.color) {
+            case 'focus':    case 'cool':   q.color = 'f5faf6'; break;
+            case 'everyday': case 'normal': q.color = 'f1e0b5'; break;
+            case 'relax':    case 'warm':   q.color = 'efd275'; break;
+            default:
+                if ( ! req.query.color.match('/^[0-9a-fA-F]{6}$/'))
+                    delete q.color;
+            }
+        }
 
         tradfri.setDeviceState(req.params.deviceId, q).then(
             res.json({
